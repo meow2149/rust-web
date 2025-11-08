@@ -44,24 +44,24 @@ cargo edit                         # Show cargo-edit help
 
 ```bash
 # Create user
-curl -X POST http://localhost:3000/users \
+curl -X POST http://localhost:3000/api/users \
   -H "Content-Type: application/json" \
   -d '{"username":"alice","email":"alice@example.com"}'
 
 # List users
-curl http://localhost:3000/users
+curl http://localhost:3000/api/users
 
 # Get user by ID
-curl http://localhost:3000/users/1
+curl http://localhost:3000/api/users/1
 
 # Update user email
-curl -X PUT http://localhost:3000/users/1 \
+curl -X PUT http://localhost:3000/api/users/1 \
   -H "Content-Type: application/json" \
   -d '{"email":"alice@newmail.com"}'
 
 # Delete user
-curl -X DELETE http://localhost:3000/users/1
+curl -X DELETE http://localhost:3000/api/users/1
 
 # Health check
-curl http://localhost:3000/healthz
+curl http://localhost:3000/api/healthz
 ```

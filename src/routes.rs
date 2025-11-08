@@ -29,13 +29,16 @@ pub fn create_router(state: AppState) -> Router {
                 .include_headers(true),
         );
 
+    let api_routes = Router::new().nest("/users", user::router::router());
+
     Router::new()
-        .nest("/users", user::router())
         .route("/healthz", get(|| async { "ok" }))
+        .nest("/api", api_routes)
+        .with_state(state)
         .layer(
             ServiceBuilder::new()
                 .layer(middleware::request_id::layer())
                 .layer(trace_layer),
         )
-        .with_state(state)
+        .layer(middleware::cors::layer())
 }
