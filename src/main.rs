@@ -1,10 +1,10 @@
 mod api;
-mod app;
 mod db;
 mod error;
 mod logging;
 mod middleware;
 mod migration;
+mod routes;
 mod server;
 mod state;
 
@@ -21,7 +21,7 @@ async fn main() -> anyhow::Result<()> {
     migration::run(&db).await?;
 
     let state = AppState::new(db);
-    let app = app::create_router(state);
+    let app = routes::create_router(state);
 
     server::serve(app).await?;
 
