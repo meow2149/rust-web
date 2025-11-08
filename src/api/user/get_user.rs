@@ -1,5 +1,5 @@
 use axum::{
-    Json,
+    Json, debug_handler,
     extract::{Path, State},
 };
 use sea_orm::EntityTrait;
@@ -11,6 +11,7 @@ use crate::{
 
 use super::{dto::UserResponse, entity};
 
+#[debug_handler]
 pub async fn get_user(
     State(state): State<AppState>,
     Path(id): Path<i32>,

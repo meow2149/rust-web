@@ -1,4 +1,5 @@
 use axum::{
+    debug_handler,
     extract::{Path, State},
     http::StatusCode,
 };
@@ -11,6 +12,7 @@ use crate::{
 
 use super::entity;
 
+#[debug_handler]
 pub async fn delete_user(
     State(state): State<AppState>,
     Path(id): Path<i32>,

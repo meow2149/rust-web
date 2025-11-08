@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use time::format_description::well_known::Rfc3339;
 
 use super::entity;
 
@@ -29,8 +30,8 @@ impl From<entity::Model> for UserResponse {
             id: model.id,
             username: model.username,
             email: model.email,
-            created_at: model.created_at.to_rfc3339(),
-            updated_at: model.updated_at.to_rfc3339(),
+            created_at: model.created_at.format(&Rfc3339).unwrap_or_default(),
+            updated_at: model.updated_at.format(&Rfc3339).unwrap_or_default(),
         }
     }
 }

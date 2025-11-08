@@ -1,9 +1,9 @@
 use axum::{
-    Json,
+    Json, debug_handler,
     extract::{Path, State},
 };
-use chrono::Utc;
 use sea_orm::{ActiveModelTrait, EntityTrait, Set};
+use time::OffsetDateTime;
 
 use crate::{
     error::{AppError, AppResult},
@@ -15,6 +15,7 @@ use super::{
     entity,
 };
 
+#[debug_handler]
 pub async fn update_user(
     State(state): State<AppState>,
     Path(id): Path<i32>,
@@ -52,7 +53,7 @@ pub async fn update_user(
         active.email = Set(trimmed.to_owned());
     }
 
-    active.updated_at = Set(Utc::now());
+    active.updated_at = Set(OffsetDateTime::now_utc());
 
     let updated = active.update(state.db()).await?;
 

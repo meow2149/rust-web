@@ -1,29 +1,28 @@
 mod api;
-mod db;
+mod config;
+mod database;
 mod error;
-mod logging;
+mod logger;
 mod middleware;
 mod migration;
 mod routes;
-mod server;
+mod serve;
 mod state;
-
-use dotenvy::dotenv;
 
 use crate::state::AppState;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    dotenv().ok();
-    logging::init();
+    dotenvy::dotenv().ok();
+    logger::init();
 
-    let db = db::connect().await?;
+    let db = database::init().await?;
     migration::run(&db).await?;
 
     let state = AppState::new(db);
     let app = routes::create_router(state);
 
-    server::serve(app).await?;
+    serve::serve(app).await?;
 
     Ok(())
 }

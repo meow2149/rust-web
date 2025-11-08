@@ -1,10 +1,11 @@
-use axum::{Json, extract::State};
+use axum::{Json, debug_handler, extract::State};
 use sea_orm::{EntityTrait, QueryOrder};
 
 use crate::{error::AppResult, state::AppState};
 
 use super::{dto::UserResponse, entity};
 
+#[debug_handler]
 pub async fn list_users(State(state): State<AppState>) -> AppResult<Json<Vec<UserResponse>>> {
     let users = entity::Entity::find()
         .order_by_asc(entity::Column::Id)

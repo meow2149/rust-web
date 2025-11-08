@@ -1,4 +1,4 @@
-use axum::{Json, extract::State, http::StatusCode};
+use axum::{Json, debug_handler, extract::State, http::StatusCode};
 use sea_orm::{ActiveModelTrait, Set};
 
 use crate::{
@@ -11,6 +11,7 @@ use super::{
     entity,
 };
 
+#[debug_handler]
 pub async fn create_user(
     State(state): State<AppState>,
     Json(payload): Json<CreateUser>,
