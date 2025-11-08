@@ -59,7 +59,7 @@ async fn main() -> anyhow::Result<()> {
         )
         .with_state(state);
 
-    let addr = std::env::var("APP_ADDR").expect("APP_ADDR environment variable must be set");
+    let addr = std::env::var("APP_ADDR").unwrap_or_else(|_| "0.0.0.0:3000".to_string());
     let addr = SocketAddr::from_str(&addr)?;
 
     info!("listening on {addr}");
@@ -73,8 +73,7 @@ async fn main() -> anyhow::Result<()> {
 fn init_tracing() {
     use tracing_subscriber::{EnvFilter, fmt, prelude::*};
 
-    let env_filter =
-        EnvFilter::try_from_default_env().expect("RUST_LOG environment variable must be set");
+    let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
 
     tracing_subscriber::registry()
         .with(env_filter)
