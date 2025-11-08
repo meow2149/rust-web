@@ -1,39 +1,33 @@
 use axum::{
-    Json, Router,
+    Json,
     extract::{Path, State},
     http::StatusCode,
-    routing::get,
 };
 use chrono::Utc;
 use sea_orm::{ActiveModelTrait, EntityTrait, QueryOrder, Set};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    entity::user,
     error::{AppError, AppResult},
     state::AppState,
 };
 
-pub fn router() -> Router<AppState> {
-    Router::new()
-        .route("/", get(list_users).post(create_user))
-        .route("/{id}", get(get_user).put(update_user).delete(delete_user))
-}
+use super::entity;
 
-async fn list_users(State(state): State<AppState>) -> AppResult<Json<Vec<UserResponse>>> {
-    let users = user::Entity::find()
-        .order_by_asc(user::Column::Id)
+pub async fn list_users(State(state): State<AppState>) -> AppResult<Json<Vec<UserResponse>>> {
+    let users = entity::Entity::find()
+        .order_by_asc(entity::Column::Id)
         .all(state.db())
         .await?;
 
     Ok(Json(users.into_iter().map(UserResponse::from).collect()))
 }
 
-async fn get_user(
+pub async fn get_user(
     State(state): State<AppState>,
     Path(id): Path<i32>,
 ) -> AppResult<Json<UserResponse>> {
-    let user = user::Entity::find_by_id(id)
+    let user = entity::Entity::find_by_id(id)
         .one(state.db())
         .await?
         .ok_or_else(|| AppError::not_found(format!("user {id} not found")))?;
@@ -41,7 +35,7 @@ async fn get_user(
     Ok(Json(UserResponse::from(user)))
 }
 
-async fn create_user(
+pub async fn create_user(
     State(state): State<AppState>,
     Json(payload): Json<CreateUser>,
 ) -> AppResult<(StatusCode, Json<UserResponse>)> {
@@ -56,7 +50,7 @@ async fn create_user(
         return Err(AppError::bad_request("email must not be empty"));
     }
 
-    let active_model = user::ActiveModel {
+    let active_model = entity::ActiveModel {
         username: Set(username.to_owned()),
         email: Set(email.to_owned()),
         ..Default::default()
@@ -67,19 +61,19 @@ async fn create_user(
     Ok((StatusCode::CREATED, Json(UserResponse::from(inserted))))
 }
 
-async fn update_user(
+pub async fn update_user(
     State(state): State<AppState>,
     Path(id): Path<i32>,
     Json(payload): Json<UpdateUser>,
 ) -> AppResult<Json<UserResponse>> {
-    let user_model = user::Entity::find_by_id(id)
+    let user_model = entity::Entity::find_by_id(id)
         .one(state.db())
         .await?
         .ok_or_else(|| AppError::not_found(format!("user {id} not found")))?;
 
     let UpdateUser { username, email } = payload;
 
-    let mut active: user::ActiveModel = user_model.into();
+    let mut active: entity::ActiveModel = user_model.into();
 
     if let Some(username) = username {
         let trimmed = username.trim();
@@ -104,8 +98,11 @@ async fn update_user(
     Ok(Json(UserResponse::from(updated)))
 }
 
-async fn delete_user(State(state): State<AppState>, Path(id): Path<i32>) -> AppResult<StatusCode> {
-    let res = user::Entity::delete_by_id(id).exec(state.db()).await?;
+pub async fn delete_user(
+    State(state): State<AppState>,
+    Path(id): Path<i32>,
+) -> AppResult<StatusCode> {
+    let res = entity::Entity::delete_by_id(id).exec(state.db()).await?;
 
     if res.rows_affected == 0 {
         return Err(AppError::not_found(format!("user {id} not found")));
@@ -115,28 +112,28 @@ async fn delete_user(State(state): State<AppState>, Path(id): Path<i32>) -> AppR
 }
 
 #[derive(Debug, Deserialize)]
-struct CreateUser {
-    username: String,
-    email: String,
+pub struct CreateUser {
+    pub username: String,
+    pub email: String,
 }
 
 #[derive(Debug, Deserialize)]
-struct UpdateUser {
-    username: Option<String>,
-    email: Option<String>,
+pub struct UpdateUser {
+    pub username: Option<String>,
+    pub email: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
-struct UserResponse {
-    id: i32,
-    username: String,
-    email: String,
-    created_at: String,
-    updated_at: String,
+pub struct UserResponse {
+    pub id: i32,
+    pub username: String,
+    pub email: String,
+    pub created_at: String,
+    pub updated_at: String,
 }
 
-impl From<user::Model> for UserResponse {
-    fn from(model: user::Model) -> Self {
+impl From<entity::Model> for UserResponse {
+    fn from(model: entity::Model) -> Self {
         Self {
             id: model.id,
             username: model.username,
