@@ -15,8 +15,8 @@ static CONFIG: LazyLock<AppConfig> =
 
 #[derive(Debug, Deserialize)]
 pub struct AppConfig {
-    pub server: ServerConfig,
-    pub database: DatabaseConfig,
+    server: ServerConfig,
+    database: DatabaseConfig,
 }
 
 impl AppConfig {
