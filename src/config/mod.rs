@@ -27,11 +27,10 @@ impl AppConfig {
     pub fn load() -> anyhow::Result<Self> {
         Config::builder()
             .add_source(
-                config::File::with_name("config.toml")
+                config::File::with_name("config")
                     .format(FileFormat::Toml)
                     .required(true),
             )
-            .add_source(config::Environment::with_prefix("APP").separator("_"))
             .build()
             .with_context(|| anyhow::anyhow!("Failed to build configuration"))?
             .try_deserialize()
