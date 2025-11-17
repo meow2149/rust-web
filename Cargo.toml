@@ -8,13 +8,31 @@ anyhow = "1.0"
 axum = { version = "0.8", features = ["macros", "json"] }
 config = { version = "0.15", features = ["toml"] }
 num_cpus = "1.16"
-sea-orm = { version = "1.1", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros", "with-time"] }
-sea-orm-migration = { version = "1.1", features = ["sqlx-postgres", "runtime-tokio-rustls"] }
+sea-orm = { version = "1.1", features = [
+    "sqlx-postgres",
+    "runtime-tokio-rustls",
+    "macros",
+    "with-time",
+] }
+sea-orm-migration = { version = "1.1", features = [
+    "sqlx-postgres",
+    "runtime-tokio-rustls",
+] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 thiserror = "2.0"
-time = { version = "0.3", features = ["serde", "macros", "formatting", "parsing"] }
-tokio = { version = "1.48", features = ["macros", "rt-multi-thread", "signal", "time"] }
+time = { version = "0.3", features = [
+    "serde",
+    "macros",
+    "formatting",
+    "parsing",
+] }
+tokio = { version = "1.48", features = [
+    "macros",
+    "rt-multi-thread",
+    "signal",
+    "time",
+] }
 tower = "0.5"
 tower-http = { version = "0.6", features = ["trace", "cors"] }
 tracing = { version = "0.1", features = ["log"] }
