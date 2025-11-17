@@ -3,8 +3,10 @@ use std::time::Duration;
 
 use sea_orm::{ConnectOptions, Database, DatabaseConnection};
 
+use crate::config;
+
 pub async fn init() -> anyhow::Result<DatabaseConnection> {
-    let database_config = &crate::config::get_config().database();
+    let database_config = &config::get_config().database();
     let mut options = ConnectOptions::new(format!(
         "postgresql://{}:{}@{}:{}/{}",
         database_config.user(),
@@ -13,7 +15,7 @@ pub async fn init() -> anyhow::Result<DatabaseConnection> {
         database_config.port(),
         database_config.database(),
     ));
-    let cpus = num_cpus::get() as u32;
+    let cpus = u32::try_from(num_cpus::get())?;
     options
         .min_connections(max(cpus * 4, 10))
         .max_connections(max(cpus * 8, 20))
