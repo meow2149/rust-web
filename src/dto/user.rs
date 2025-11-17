@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use time::format_description::well_known::Rfc3339;
 
-use super::entity;
+use crate::entity::user;
 
 #[derive(Debug, Deserialize)]
 pub struct CreateUser {
@@ -24,8 +24,8 @@ pub struct UserResponse {
     pub updated_at: String,
 }
 
-impl From<entity::Model> for UserResponse {
-    fn from(model: entity::Model) -> Self {
+impl From<user::Model> for UserResponse {
+    fn from(model: user::Model) -> Self {
         Self {
             id: model.id,
             username: model.username,
