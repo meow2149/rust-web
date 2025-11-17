@@ -13,7 +13,7 @@ pub async fn init() -> anyhow::Result<DatabaseConnection> {
         database_config.password(),
         database_config.host(),
         database_config.port(),
-        database_config.database(),
+        database_config.database()
     ));
     let cpus = u32::try_from(num_cpus::get())?;
     options

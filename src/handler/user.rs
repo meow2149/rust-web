@@ -1,5 +1,6 @@
+use axum::debug_handler;
 use axum::{
-    Json, debug_handler,
+    Json,
     extract::{Path, State},
     http::StatusCode,
 };
