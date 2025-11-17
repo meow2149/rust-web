@@ -7,7 +7,6 @@ edition = "2024"
 anyhow = "1.0"
 axum = { version = "0.8", features = ["macros", "json"] }
 config = { version = "0.15", features = ["toml"] }
-dotenvy = "0.15"
 num_cpus = "1.16"
 sea-orm = { version = "1.1", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros", "with-time"] }
 sea-orm-migration = { version = "1.1", features = ["sqlx-postgres", "runtime-tokio-rustls"] }

@@ -13,7 +13,6 @@ use crate::state::AppState;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    dotenvy::dotenv().ok();
     logger::init();
 
     let db = database::init().await?;

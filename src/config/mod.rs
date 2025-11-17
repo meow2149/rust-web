@@ -1,4 +1,5 @@
 mod database;
+mod logger;
 mod server;
 
 use std::sync::LazyLock;
@@ -8,6 +9,7 @@ use config::{Config, FileFormat};
 use serde::Deserialize;
 
 pub use database::DatabaseConfig;
+pub use logger::LoggerConfig;
 pub use server::ServerConfig;
 
 static CONFIG: LazyLock<AppConfig> =
@@ -17,6 +19,8 @@ static CONFIG: LazyLock<AppConfig> =
 pub struct AppConfig {
     server: ServerConfig,
     database: DatabaseConfig,
+    #[serde(default)]
+    logger: LoggerConfig,
 }
 
 impl AppConfig {
@@ -40,6 +44,10 @@ impl AppConfig {
 
     pub fn database(&self) -> &DatabaseConfig {
         &self.database
+    }
+
+    pub fn logger(&self) -> &LoggerConfig {
+        &self.logger
     }
 }
 

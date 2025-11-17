@@ -8,3 +8,15 @@ user = "postgres"
 password = "postgres"
 database = "postgres"
 schema = "public"
+
+[logger]
+level = "info"
+
+[logger.format]
+level = true
+file = true
+line_number = true
+target = false
+thread_ids = false
+thread_names = false
+ansi = true
