@@ -6,7 +6,7 @@ use sea_orm::{ConnectOptions, Database, DatabaseConnection};
 use crate::config;
 
 pub async fn init() -> anyhow::Result<DatabaseConnection> {
-    let database_config = &config::get_config().database();
+    let database_config = config::get_config().database();
     let mut options = ConnectOptions::new(format!(
         "postgresql://{}:{}@{}:{}/{}",
         database_config.user(),
