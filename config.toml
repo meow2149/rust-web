@@ -14,8 +14,8 @@ level = "info"
 
 [logger.format]
 level = true
-file = true
-line_number = true
+file = false
+line_number = false
 target = false
 thread_ids = false
 thread_names = false

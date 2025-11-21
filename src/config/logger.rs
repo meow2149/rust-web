@@ -11,9 +11,9 @@ pub struct LoggerConfig {
 pub struct FormatConfig {
     #[serde(default = "default_true")]
     level: bool,
-    #[serde(default = "default_true")]
+    #[serde(default = "default_false")]
     file: bool,
-    #[serde(default = "default_true")]
+    #[serde(default = "default_false")]
     line_number: bool,
     #[serde(default = "default_false")]
     target: bool,
